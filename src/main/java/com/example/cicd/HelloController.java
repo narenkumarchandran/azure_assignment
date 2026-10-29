@@ -1,9 +1,9 @@
 package com.example.cicd;
 
+import java.util.Map;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 @RestController
 public class HelloController {
@@ -13,7 +13,7 @@ public class HelloController {
         return Map.of(
                 "application", "DevOps CIA 2",
                 "version", "v1",
-                "Updated through CI/CD pipeline!"
+                "status", "Updated the application!"
         );
     }
 
