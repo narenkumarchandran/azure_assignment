@@ -13,7 +13,7 @@ public class HelloController {
         return Map.of(
                 "application", "DevOps CIA 2",
                 "version", "v1",
-                "status", "Running successfully!"
+                "Updated through CI/CD pipeline!"
         );
     }
 
