@@ -25,7 +25,14 @@ jobs:
     steps:
       # 1. Download source code
       - name: Checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Scan repository for secrets
+        uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # 2. Install Java 21 and configure Maven cache
       - name: Set up Java 21
