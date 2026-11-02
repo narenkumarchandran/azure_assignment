@@ -45,8 +45,15 @@ jobs:
       # 3. Compile the application and execute tests
       - name: Build and test with Maven
         run: mvn --batch-mode clean verify
+      
+      #4 . Analyze code with SonarQube
+      - name: Analyze code with SonarQube
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: >
+          mvn --batch-mode org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
 
-      # 4. Authenticate to Azure using GitHub OIDC
+      # 5. Authenticate to Azure using GitHub OIDC
       - name: Authenticate to Azure
         uses: azure/login@v2
         with:
@@ -54,11 +61,11 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      # 5. Authenticate Docker with Azure Container Registry
+      # 6. Authenticate Docker with Azure Container Registry
       - name: Log in to Azure Container Registry
         run: az acr login --name "$ACR_NAME"
 
-      # 6. Build Docker image using the Git commit SHA as its version
+      # 7. Build Docker image using the Git commit SHA as its version
       - name: Build Docker image
         run: |
           docker build \
@@ -66,13 +73,13 @@ jobs:
             -t "$ACR_NAME.azurecr.io/$IMAGE_NAME:latest" \
             .
 
-      # 7. Push versioned image and latest tag to ACR
+      # 8. Push versioned image and latest tag to ACR
       - name: Push Docker image to ACR
         run: |
           docker push "$ACR_NAME.azurecr.io/$IMAGE_NAME:$GITHUB_SHA"
           docker push "$ACR_NAME.azurecr.io/$IMAGE_NAME:latest"
 
-      # 8. Configure kubectl to access AKS
+      # 9. Configure kubectl to access AKS
       - name: Connect to AKS
         uses: azure/aks-set-context@v4
         with:
@@ -80,21 +87,21 @@ jobs:
           cluster-name: ${{ env.AKS_CLUSTER }}
           admin: 'true'
 
-      # 9. Update the Kubernetes Deployment to use the new image
+      # 10. Update the Kubernetes Deployment to use the new image
       - name: Deploy application to AKS
         run: |
           kubectl set image deployment/java-cicd-app \
             java-cicd-app="$ACR_NAME.azurecr.io/$IMAGE_NAME:$GITHUB_SHA" \
             --namespace "$NAMESPACE"
 
-      # 10. Wait for Kubernetes to complete the rollout
+      # 11. Wait for Kubernetes to complete the rollout
       - name: Verify deployment
         run: |
           kubectl rollout status deployment/java-cicd-app \
             --namespace "$NAMESPACE" \
             --timeout=180s
 
-      # 11. Display the deployment and service status
+      # 12. Display the deployment and service status
       - name: Display Kubernetes resources
         run: |
           kubectl get deployments --namespace "$NAMESPACE"
