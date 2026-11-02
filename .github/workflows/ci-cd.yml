@@ -51,7 +51,10 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: >
-          mvn --batch-mode org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+          mvn --batch-mode
+          org.sonarsource.scanner.maven:sonar-maven-plugin:5.0.0.4389:sonar
+          -Dsonar.organization=narenkumarchandran
+          -Dsonar.projectKey=narenkumarchandran_azure_assignment
 
       # 5. Authenticate to Azure using GitHub OIDC
       - name: Authenticate to Azure
