@@ -1,3 +1,6 @@
 target/
 *.jar
 .env
+assignment_screenshots/
+DevOps_CIA2_Assignment.pdf
+assignment_screenshots.zip

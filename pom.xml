@@ -17,7 +17,7 @@
     <artifactId>java-cicd-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>java-cicd-app</name>
+    <name>java-cicd-app</name>  
     <description>Azure DevOps CIA 2 CI/CD Pipeline Application</description>
 
     <properties>

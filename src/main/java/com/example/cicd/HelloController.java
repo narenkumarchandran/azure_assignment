@@ -14,7 +14,7 @@ public class HelloController {
                 "application", "DevOps CIA 2",
                 "version", "v1",
                 "status", "Updated the application!"
-        );
+        ;
     }
 
     @GetMapping("/health")
