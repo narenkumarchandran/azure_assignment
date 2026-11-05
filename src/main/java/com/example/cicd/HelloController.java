@@ -13,7 +13,8 @@ public class HelloController {
         return Map.of(
                 "application", "DevOps CIA 2",
                 "version", "v1",
-                "status", "Updated the application!"
+                "status", "Updated the application!",
+                "value", String.valueOf(3/0)
         );
     }
 
